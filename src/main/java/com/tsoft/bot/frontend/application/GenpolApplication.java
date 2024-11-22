@@ -5,12 +5,6 @@ import com.tsoft.bot.frontend.helpers.Hook;
 import com.tsoft.bot.frontend.objects.ExcelObjects;
 import com.tsoft.bot.frontend.pages.*;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverWait;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import java.time.Duration;
-
 
 public class GenpolApplication {
     private BaseClass page;
@@ -18,21 +12,11 @@ public class GenpolApplication {
     private final ConsultPage consultPage = new ConsultPage(browser);
     private final smokePage smokePage = new smokePage(browser);
 
-    public void iniciarSesion() throws Exception {
-    // Crear una espera explícita de 10 segundos
-    WebDriverWait wait = new WebDriverWait(browser, Duration.ofSeconds(10));
-
-    // Esperar hasta que el elemento de la página de inicio de sesión esté disponible
-    WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginButtonId"))); // Reemplazar con el ID correcto
-
-    // Iniciar la sesión
-    page = LoginPage.getInstance(browser);
-    ((LoginPage) page).login();
-
-    // Esperar hasta que la página se haya cargado completamente después del login
-    WebElement appStartElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("applicationStartId"))); // Reemplazar con el ID correcto
-    ((LoginPage) page).checkApplicationStartUp();
-}
+    public void iniciarGenpol(int dataRow, int userRow) throws Exception {
+        ExcelObjects.loadData(dataRow, userRow);
+        page = LoginPage.getInstance(browser);
+        ((LoginPage) page).startApplication();
+    }
     public void iniciarGenpol(int userRow) throws Exception {
         ExcelObjects.loadData(userRow);
         page = LoginPage.getInstance(browser);
