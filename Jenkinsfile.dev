@@ -16,14 +16,14 @@ pipeline {
         stage('Instalar Dependencias') {
             steps {
                 // Comando para instalar dependencias usando Maven
-                bat "'${MAVEN_HOME}/bin/mvn' install"
+                bat "'${MAVEN_HOME}/bin/mvn install"
             }
         }
 
         stage('Ejecutar Pruebas') {
             steps {
                 // Ejecutar pruebas con Maven
-                bat "'${MAVEN_HOME}/bin/mvn' test"
+                bat "'${MAVEN_HOME}/bin/mvn test"
             }
         }
 
