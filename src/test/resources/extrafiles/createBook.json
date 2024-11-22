@@ -1,0 +1,11 @@
+{
+    "firstname" : "Mathias",
+    "lastname" : "GV",
+    "totalprice" : 182,
+    "depositpaid" : true,
+    "bookingdates" : {
+        "checkin" : "2020-10-09",
+        "checkout" : "2021-02-10"
+    },
+    "additionalneeds" : "enviroment"
+}
