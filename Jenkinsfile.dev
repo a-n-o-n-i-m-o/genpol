@@ -23,7 +23,7 @@ pipeline {
         stage('Ejecutar Pruebas') {
             steps {
                 // Ejecutar pruebas con Maven
-                bat "\"${MAVEN_HOME}\\bin\\mvn\" test"
+                bat "\"${MAVEN_HOME}\\bin\\mvn\" clean verify "
             }
         }
 
