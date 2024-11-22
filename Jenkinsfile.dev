@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN'  // Aquí haces referencia a la herramienta Maven configurada en Jenkins
+        // Asegúrate de que tienes Maven configurado en Jenkins
+        maven 'MAVEN'
     }
 
     stages {
@@ -12,15 +13,31 @@ pipeline {
             }
         }
 
-        stage('Validar Maven') {
+        stage('Instalar Dependencias') {
             steps {
-                echo "Maven instalado en: ${tool 'MAVEN'}" // Esto imprimirá la ruta de Maven
+                // Comando para instalar dependencias usando Maven
+                sh "'${MAVEN_HOME}/bin/mvn' install"
+            }
+        }
+
+        stage('Ejecutar Pruebas') {
+            steps {
+                // Ejecutar pruebas con Maven
+                sh "'${MAVEN_HOME}/bin/mvn' test"
+            }
+        }
+
+        stage('Generar Reporte') {
+            steps {
+                // Generar reportes de las pruebas, puedes personalizar este paso según tus necesidades
+                junit '**/target/surefire-reports/*.xml'
             }
         }
     }
 
     post {
         always {
+            // Limpiar el workspace siempre después de la ejecución
             cleanWs()
         }
     }
