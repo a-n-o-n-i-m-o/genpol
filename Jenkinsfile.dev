@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        MAVEN_HOME = tool name: 'MAVEN', type: 'maven'
-    }
-
     stages {
         stage('Clonar Repositorio') {
             steps {
@@ -14,7 +10,7 @@ pipeline {
 
         stage('Validar Maven') {
             steps {
-                bat '${MAVEN_HOME}/bin/mvn -version'
+                echo '${MAVEN}'
             }
         }
     }
