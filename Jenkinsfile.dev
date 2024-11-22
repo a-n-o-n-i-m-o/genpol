@@ -14,7 +14,7 @@ pipeline {
 
         stage('Validar Maven') {
             steps {
-                sh '${MAVEN_HOME}/bin/mvn -version'
+                bat '${MAVEN_HOME}/bin/mvn -version'
             }
         }
     }
