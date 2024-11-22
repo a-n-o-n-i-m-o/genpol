@@ -7,35 +7,17 @@ pipeline {
     }
 
     stages {
-        stage('Clonar Repositorio') {
+        stage('Probar MAVEN_HOME') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Instalar Dependencias') {
-            steps {
-                sh '${MAVEN_HOME}/bin/mvn clean install'
-            }
-        }
-
-        stage('Ejecutar Pruebas') {
-            steps {
-                sh '${MAVEN_HOME}/bin/mvn test -Dtest=RunTest'
-            }
-        }
-
-        stage('Generar Reporte') {
-            steps {
-                sh 'ls -lh target'
-                archiveArtifacts artifacts: 'target/**/*.html, target/**/*.png, target/**/*.log', allowEmptyArchive: true
+                echo "MAVEN_HOME está configurado como: ${MAVEN_HOME}"
+                sh '${MAVEN_HOME}/bin/mvn -version'
             }
         }
     }
 
     post {
         always {
-            junit 'target/surefire-reports/*.xml'
+            echo 'Pipeline finalizado.'
             cleanWs()
         }
     }
