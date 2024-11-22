@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_HOME = tool name: 'Maven', type: 'maven'
+        JAVA_HOME = tool name: 'JDK', type: 'jdk'
+    }
+
+    stages {
+        stage('Clonar Repositorio') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Instalar Dependencias') {
+            steps {
+                sh '${MAVEN_HOME}/bin/mvn clean install'
+            }
+        }
+
+        stage('Ejecutar Pruebas') {
+            steps {
+                sh '${MAVEN_HOME}/bin/mvn test -Dtest=RunTest'
+            }
+        }
+
+        stage('Generar Reporte') {
+            steps {
+                sh 'ls -lh target'
+                archiveArtifacts artifacts: 'target/**/*.html, target/**/*.png, target/**/*.log', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        always {
+            junit 'target/surefire-reports/*.xml'
+            cleanWs()
+        }
+    }
+}
