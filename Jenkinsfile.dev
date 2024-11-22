@@ -2,14 +2,18 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool name: 'Maven', type: 'maven'
-        JAVA_HOME = tool name: 'JDK', type: 'jdk'
+        MAVEN_HOME = tool name: 'MAVEN', type: 'maven'
     }
 
     stages {
-        stage('Probar MAVEN_HOME') {
+        stage('Clonar Repositorio') {
             steps {
-                echo "MAVEN_HOME está configurado como: ${MAVEN_HOME}"
+                checkout scm
+            }
+        }
+
+        stage('Validar Maven') {
+            steps {
                 sh '${MAVEN_HOME}/bin/mvn -version'
             }
         }
@@ -17,7 +21,6 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline finalizado.'
             cleanWs()
         }
     }
