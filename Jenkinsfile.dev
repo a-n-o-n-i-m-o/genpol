@@ -20,6 +20,12 @@ pipeline {
         stage('Instalar Dependencias') {
             steps {
                 // Comando para instalar dependencias usando Maven
+                bat "dir"
+            }
+        }
+        stage('Instalar Dependencias') {
+            steps {
+                // Comando para instalar dependencias usando Maven
                 bat "\"${MAVEN_HOME}\\bin\\mvn\" install"
             }
         }
