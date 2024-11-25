@@ -17,7 +17,7 @@ pipeline {
             }
         }
 
-        stage('Instalar Dependencias') {
+        stage('Instalar Dependencia2s') {
             steps {
                 // Comando para instalar dependencias usando Maven
                 bat "dir"
