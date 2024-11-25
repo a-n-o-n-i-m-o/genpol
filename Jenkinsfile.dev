@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        CHROME_DRIVER_PATH = "${WORKSPACE}/src/main/resources/driver/chrome131/chromedriver.exe"
+    }
+
     tools {
         // Asegúrate de que tienes Maven configurado en Jenkins
         maven 'MAVEN'
@@ -19,11 +23,13 @@ pipeline {
                 bat "\"${MAVEN_HOME}\\bin\\mvn\" install"
             }
         }
-
         stage('Ejecutar Pruebas') {
             steps {
                 // Ejecutar pruebas con Maven
-                bat "\"${MAVEN_HOME}\\bin\\mvn\" clean verify "
+                bat """
+                set WEBDRIVER_CHROME_DRIVER=%CHROME_DRIVER_PATH%
+                "%MAVEN_HOME%\\bin\\mvn" clean verify
+                """
             }
         }
 
