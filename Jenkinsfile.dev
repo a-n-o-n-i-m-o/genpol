@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        CHROME_DRIVER_PATH = "${WORKSPACE}/src/main/resources/driver/chrome131/chromedriver.exe"
+        CHROME_DRIVER_PATH = "C:/ProgramData/Jenkins/.jenkins/workspace/auto-os-genpol/src/main/resources/driver/chrome131/chromedriver.exe"
     }
 
     tools {
