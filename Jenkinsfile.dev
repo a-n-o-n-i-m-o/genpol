@@ -32,9 +32,8 @@ pipeline {
         stage('Ejecutar Pruebas') {
             steps {
                 // Ejecutar pruebas con Maven
-                bat """
-                set WEBDRIVER_CHROME_DRIVER=%CHROME_DRIVER_PATH%
-                "%MAVEN_HOME%\\bin\\mvn" clean verify
+                bat """ 
+                bin\\mvn" clean verify
                 """
             }
         }
