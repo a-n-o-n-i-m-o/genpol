@@ -67,7 +67,11 @@ public class Hook extends Listener {
 			generateWord.startUpWord(scenario.getName());
 			SerenityDriver = new SerenityWebdriverManager(new WebDriverFactory(),new WebDriverConfiguration(new MockEnvironmentVariables()));
 
-			 // Espera explícita para el elemento
+			// Inicializar el WebDriver
+           		System.setProperty(CHROME_KEY, CHROME_DRIVER);
+            		driver = new ChromeDriver();
+			
+			// Espera explícita para el elemento
            		WebDriverWait wait = new WebDriverWait(driver, 10);
             		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id$='ddlRamo']")));
 
