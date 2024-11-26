@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         CHROME_DRIVER_PATH = "C:/ProgramData/Jenkins/.jenkins/workspace/auto-os-genpol/src/main/resources/driver/chrome131/chromedriver.exe"
+        RUTA_GIT = 'C:\\Users\\alfredo.obregon\\AppData\\Local\\Programs\\Git\\bin'
     }
 
     tools {
@@ -12,8 +13,20 @@ pipeline {
     stages {
         stage('Configurar Git') {
             steps {
-                bat 'git config --global http.postBuffer 524288000'
-                bat 'git config --global http.maxRequestBuffer 100M'
+                script {
+                    bat "\"${RUTA_GIT}\\git.exe\" config --global http.postBuffer 524288000"
+                    bat "\"${RUTA_GIT}\\git.exe\" config --global http.maxRequestBuffer 100M"
+                    bat "\"${RUTA_GIT}\\git.exe\" config --global http.lowSpeedLimit 0"
+                    bat "\"${RUTA_GIT}\\git.exe\" config --global http.lowSpeedTime 999"
+                }
+            }
+        }
+
+        stage('Clonar Repositorio') {
+            steps {
+                retry(3) {
+                    checkout scm
+                }
             }
         }
 
