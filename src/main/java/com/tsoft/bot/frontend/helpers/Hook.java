@@ -60,81 +60,87 @@ public class Hook extends Listener {
 	}
 
 	@Before
-	public static void setUpWeb(Scenario scenario) throws IOException {
-		if (!scenario.getName().contains("API") && !scenario.getName().contains("servicios"))
-		{
-			generateWord = new GenerateWord();
-			generateWord.startUpWord(scenario.getName());
-			SerenityDriver = new SerenityWebdriverManager(new WebDriverFactory(),new WebDriverConfiguration(new MockEnvironmentVariables()));
+    public static void setUpWeb(Scenario scenario) throws IOException {
+        if (!scenario.getName().contains("API") && !scenario.getName().contains("servicios")) {
+            generateWord = new GenerateWord();
+            generateWord.startUpWord(scenario.getName());
+            SerenityDriver = new SerenityWebdriverManager(new WebDriverFactory(), new WebDriverConfiguration(new MockEnvironmentVariables()));
 
-			// Inicializar el WebDriver
-           		System.setProperty(CHROME_KEY, CHROME_DRIVER);
-            		driver = new ChromeDriver();
-			
-			// Espera explícita para el elemento
-           		WebDriverWait wait = new WebDriverWait(driver, 10);
-            		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id$='ddlRamo']")));
+            // Inicializar el WebDriver
+            System.setProperty(CHROME_KEY, CHROME_DRIVER);
+            driver = new ChromeDriver();
 
-			try {
-				Logger.getLogger("[LOG] NAVEGADOR: resources");
+            try {
+                Logger.getLogger("[LOG] NAVEGADOR: resources");
 
-				switch ("Chrome"){
-					case "IE":
-						System.setProperty(IE_KEY, FileHelper.getProjectFolder() + IE_DRIVER);
-						InternetExplorerOptions options = new InternetExplorerOptions();
-						options.introduceFlakinessByIgnoringSecurityDomains();
-						options.setCapability("requireWindowFocus", true);
-						options.setCapability("enablePersistentHover", false);
-						options.setCapability(InternetExplorerDriver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
-						options.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
-						options.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-						driver = new InternetExplorerDriver(options);
-						SerenityDriver.setCurrentDriver(driver);
-						break;
-					case "Chrome":
-						System.setProperty(CHROME_KEY, FileHelper.getProjectFolder() + CHROME_DRIVER);
-						//WebDriverManager.chromedriver().setup();
-						System.setProperty("webdriver.chrome.silentOutput", "true");
-						ChromeOptions chromeOptions = new ChromeOptions();
-						chromeOptions.addArguments(
-								//"--headless",
-								"--verbose",
-								"--disable-web-security",
-								"--ignore-certificate-errors",
-								"--allow-running-insecure-content",
-								"--allow-insecure-localhost",
-								"--no-sandbox",
-								"--disable-gpu",
-								"enable-automation",
-								"--disable-infobars",
-								"--disable-dev-shm-usage",
-								"--disable-browser-side-navigation"
-						);
-						driver = new ChromeDriver(chromeOptions);
-						getDriver().manage().window().maximize();
-						getDriver().manage().timeouts().implicitlyWait(DELAY, TimeUnit.SECONDS);
-						SerenityDriver.setCurrentDriver(driver);
-						break;
+                switch ("Chrome") {
+                    case "IE":
+                        System.setProperty(IE_KEY, FileHelper.getProjectFolder() + IE_DRIVER);
+                        InternetExplorerOptions options = new InternetExplorerOptions();
+                        options.introduceFlakinessByIgnoringSecurityDomains();
+                        options.setCapability("requireWindowFocus", true);
+                        options.setCapability("enablePersistentHover", false);
+                        options.setCapability(InternetExplorerDriver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
+                        options.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
+                        options.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+                        driver = new InternetExplorerDriver(options);
+                        SerenityDriver.setCurrentDriver(driver);
+                        break;
+                    case "Chrome":
+                        System.setProperty(CHROME_KEY, FileHelper.getProjectFolder() + CHROME_DRIVER);
+                        System.setProperty("webdriver.chrome.silentOutput", "true");
+                        ChromeOptions chromeOptions = new ChromeOptions();
+                        chromeOptions.addArguments(
+                                "--verbose",
+                                "--disable-web-security",
+                                "--ignore-certificate-errors",
+                                "--allow-running-insecure-content",
+                                "--allow-insecure-localhost",
+                                "--no-sandbox",
+                                "--disable-gpu",
+                                "enable-automation",
+                                "--disable-infobars",
+                                "--disable-dev-shm-usage",
+                                "--disable-browser-side-navigation"
+                        );
+                        driver = new ChromeDriver(chromeOptions);
+                        getDriver().manage().window().maximize();
+                        getDriver().manage().timeouts().implicitlyWait(DELAY, TimeUnit.SECONDS);
+                        SerenityDriver.setCurrentDriver(driver);
+                        break;
 
-					case "Firefox":
-						System.setProperty(GECKO_KEY, FileHelper.getProjectFolder() + GECKO_DRIVER);
-						FirefoxOptions firefoxOptions = new FirefoxOptions();
-						driver = new FirefoxDriver(firefoxOptions);
-						getDriver().manage().window().maximize();
-						getDriver().manage().timeouts().implicitlyWait(DELAY, TimeUnit.SECONDS);
-						SerenityDriver.setCurrentDriver(driver);
-						break;
-					default:
-						break;
-				}
+                    case "Firefox":
+                        System.setProperty(GECKO_KEY, FileHelper.getProjectFolder() + GECKO_DRIVER);
+                        FirefoxOptions firefoxOptions = new FirefoxOptions();
+                        driver = new FirefoxDriver(firefoxOptions);
+                        getDriver().manage().window().maximize();
+                        getDriver().manage().timeouts().implicitlyWait(DELAY, TimeUnit.SECONDS);
+                        SerenityDriver.setCurrentDriver(driver);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Navegador no soportado");
+                }
 
-			}catch (Exception t){
-				generateWord.sendText("Error : Navegador se cerro inesperandamente." + t.getMessage());
-				stepFailNoShoot("Error : Navegador se cerro inesperandamente." + t.getMessage());
-				throw t;
-			}
-		}
-	}
+                // Navegar a la URL de la aplicación
+                driver.get("http://10.20.1.21/GENERADORLIMA/policygenerator.aspx");
+
+                // Espera explícita para el elemento
+                WebDriverWait wait = new WebDriverWait(driver, 20); // Aumenta el tiempo de espera a 20 segundos
+                WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id$='ddlRamo']")));
+                Logger.getLogger("[LOG] Elemento encontrado: " + element);
+
+            } catch (TimeoutException e) {
+                Logger.getLogger("[LOG] Elemento no encontrado: " + e.getMessage());
+                generateWord.sendText("Error: Elemento no encontrado. " + e.getMessage());
+                stepFailNoShoot("Error: Elemento no encontrado. " + e.getMessage());
+                throw e;
+            } catch (Exception t) {
+                generateWord.sendText("Error: Navegador se cerró inesperadamente. " + t.getMessage());
+                stepFailNoShoot("Error: Navegador se cerró inesperadamente. " + t.getMessage());
+                throw t;
+            }
+        }
+    }
 
 	@After
 	public void tearDown(Scenario scenario) throws IOException {
