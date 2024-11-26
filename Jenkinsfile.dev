@@ -10,6 +10,13 @@ pipeline {
     }
 
     stages {
+        stage('Configurar Git') {
+            steps {
+                bat 'git config --global http.postBuffer 524288000'
+                bat 'git config --global http.maxRequestBuffer 100M'
+            }
+        }
+
         stage('Clonar Repositorio') {
             steps {
                 retry(3) {
