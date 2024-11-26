@@ -41,7 +41,7 @@ public class Hook extends Listener {
 	private static final String GECKO_KEY 		= "webdriver.gecko.driver";
 	private static final String GECKO_DRIVER 	= "/src/main/resources/driver/firefox/geckodriver.exe";
 	private static final String CHROME_KEY 		= "webdriver.chrome.driver";
-	private static final String CHROME_DRIVER 	= "/src/main/resources/driver/chrome131/chromedriver.exe";
+	private static final String CHROME_DRIVER 	= "C:/ProgramData/Jenkins/.jenkins/workspace/auto-os-genpol/src/main/resources/driver/chrome131/chromedriver.exe";
 	private static final String IE_KEY 			= "webdriver.ie.driver";
 	private static final String IE_DRIVER 		= "/src/main/resources/driver/ie/3.5/IEDriverServer.exe";
 	private static final long DELAY = 10;
