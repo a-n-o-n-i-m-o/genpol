@@ -32,13 +32,13 @@ pipeline {
 
         stage('Instalar Dependencias') {
             steps {
-                bat "\"${MAVEN_HOME}\\bin\\mvn\" install"
+                bat "\"${tool 'MAVEN'}\\bin\\mvn\" install"
             }
         }
 
         stage('Ejecutar Pruebas') {
             steps {
-                bat "bin\\mvn clean verify"
+                bat "\"${tool 'MAVEN'}\\bin\\mvn\" clean verify"
             }
         }
 
