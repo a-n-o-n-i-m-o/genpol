@@ -17,14 +17,6 @@ pipeline {
             }
         }
 
-        stage('Clonar Repositorio') {
-            steps {
-                retry(3) {
-                    checkout scm
-                }
-            }
-        }
-
         stage('Instalar Dependencias') {
             steps {
                 bat "\"${MAVEN_HOME}\\bin\\mvn\" install"
