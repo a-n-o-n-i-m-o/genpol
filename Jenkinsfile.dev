@@ -6,12 +6,11 @@ pipeline {
     }
 
     tools {
-        // Asegúrate de que tienes Maven configurado en Jenkins
         maven 'MAVEN'
     }
 
     stages {
-     stage('Clonar Repositorio') {
+        stage('Clonar Repositorio') {
             steps {
                 retry(3) {
                     checkout scm
@@ -19,30 +18,20 @@ pipeline {
             }
         }
 
-        stage('Instalar Dependencia2s') {
-            steps {
-                // Comando para instalar dependencias usando Maven
-                bat "dir"
-            }
-        }
         stage('Instalar Dependencias') {
             steps {
-                // Comando para instalar dependencias usando Maven
                 bat "\"${MAVEN_HOME}\\bin\\mvn\" install"
             }
         }
+
         stage('Ejecutar Pruebas') {
             steps {
-                // Ejecutar pruebas con Maven
-                bat """ 
-                bin\\mvn" clean verify
-                """
+                bat "bin\\mvn clean verify"
             }
         }
 
         stage('Generar Reporte') {
             steps {
-                // Generar reportes de las pruebas, puedes personalizar este paso según tus necesidades
                 junit '**/target/surefire-reports/*.xml'
             }
         }
@@ -50,7 +39,6 @@ pipeline {
 
     post {
         always {
-            // Limpiar el workspace siempre después de la ejecución
             cleanWs()
         }
     }
