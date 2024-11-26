@@ -11,9 +11,11 @@ pipeline {
     }
 
     stages {
-        stage('Clonar Repositorio') {
+     stage('Clonar Repositorio') {
             steps {
-                checkout scm
+                retry(3) {
+                    checkout scm
+                }
             }
         }
 
